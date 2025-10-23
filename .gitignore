@@ -1,0 +1,14 @@
+out/
+.vscode/
+build/
+*.o
+*.out
+*.log
+*.tmp
+*.ptx
+*.bin
+16k_*
+8k_*
+2k_*
+256_*
+cmd/
