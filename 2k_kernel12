@@ -1,0 +1,1153 @@
+==PROF== Connected to process 577882 (/gpfs/scratch/bsc28/bsc28207/fast.cu/out/matmul)
+==PROF== Profiling "warmupKernel()" - 0: 0%....50%....100% - 12 passes
+Configuration 1 2048x2048x2048
+KERNEL 16
+==PROF== Profiling "nvjet_tst_256x128_64x4_1x2_h_..." - 1: 0%....50%....100% - 12 passes
+Divergence! Should 32.75, Is  0.00 (Diff 32.75) at 0
+~~~~~~~~~~~~~~~~ Failed to pass the correctness verification against cuBLAS. ~~~~~~~~~~~~~~~~
+-22.875000
+Average elapsed time: (0.000001) s, performance: (33294.3) TFLOPS. size: (2048).
+
+==PROF== Disconnected from process 577882
+[577882] matmul@127.0.0.1
+  warmupKernel() (1024, 1, 1)x(1024, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.58
+    SM Frequency                    Ghz         1.59
+    Elapsed Cycles                cycle         4987
+    Memory Throughput                 %        10.78
+    DRAM Throughput                   %         0.05
+    Duration                         us         3.14
+    L1/TEX Cache Throughput           %         0.66
+    L2 Cache Throughput               %        12.64
+    SM Active Cycles              cycle      1208.78
+    Compute (SM) Throughput           %        11.25
+    ----------------------- ----------- ------------
+
+    OPT   This workload exhibits low compute throughput and memory bandwidth utilization relative to the peak           
+          performance of this device. Achieved compute throughput and/or memory bandwidth below 60.0% of peak           
+          typically indicate latency issues. Look at Scheduler Statistics and Warp State Statistics for potential       
+          reasons.                                                                                                      
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.41
+    Executed Ipc Elapsed  inst/cycle         0.10
+    Issue Slots Busy               %        10.27
+    Issued Ipc Active     inst/cycle         0.41
+    SM Busy                        %        20.54
+    -------------------- ----------- ------------
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Mbyte/s       734.69
+    Mem Busy                               %        10.78
+    Max Bandwidth                          %         5.48
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                       19
+    L2 Hit Rate                            %        99.51
+    Mem Pipes Busy                         %        11.25
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                  1024
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   0
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                   1024
+    Registers Per Thread             register/thread              16
+    Shared Memory Configuration Size           Kbyte            8.19
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block       byte/block               0
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread         1048576
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                3.88
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 25%                                                                                             
+          A wave of thread blocks is defined as the maximum number of blocks that can be executed in parallel on the    
+          target GPU. The number of blocks in a wave depends on the number of multiprocessors and the theoretical       
+          occupancy of the kernel. This kernel launch results in 3 full waves and a partial wave of 233 thread blocks.  
+          Under the assumption of a uniform execution duration of all thread blocks, this partial wave may account for  
+          up to 25.0% of the total runtime of this kernel. Try launching a grid with no partial wave. The overall       
+          impact of this tail effect also lessens with the number of full waves executed for a grid. See the Hardware   
+          Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model) description for     
+          more details on launch configurations.                                                                        
+
+  nvjet_tst_256x128_64x4_1x2_h_bz_coopA_TNT (2, 64, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.39
+    Elapsed Cycles                cycle        45198
+    Memory Throughput                 %        55.48
+    DRAM Throughput                   %        34.99
+    Duration                         us           32
+    L1/TEX Cache Throughput           %        63.25
+    L2 Cache Throughput               %        41.15
+    SM Active Cycles              cycle     39147.23
+    Compute (SM) Throughput           %        71.19
+    ----------------------- ----------- ------------
+
+    OPT   Compute is more heavily utilized than Memory: Look at the Compute Workload Analysis section to see what the   
+          compute pipelines are spending their time doing. Also, consider whether any computation is redundant and      
+          could be reduced or moved to look-up tables.                                                                  
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.45
+    Executed Ipc Elapsed  inst/cycle         0.39
+    Issue Slots Busy               %        11.30
+    Issued Ipc Active     inst/cycle         0.45
+    SM Busy                        %        81.17
+    -------------------- ----------- ------------
+
+    OPT   Shared is the highest-utilized pipeline (81.2%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical sum of several other pipelines which can't achieve full             
+          utilization on their own. It executes 64-bit floating point and tensor operations. It's dominated by its      
+          Tensor (FP) sub-pipeline. The pipeline is over-utilized and likely a performance bottleneck. Based on the     
+          number of executed instructions, the highest utilized pipeline (9.9%) is Uniform. Comparing the two, the      
+          overall pipeline utilization appears to be caused by high-latency instructions. See the Kernel Profiling      
+          Guide (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the    
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       569.88
+    Mem Busy                               %        55.48
+    Max Bandwidth                          %        53.97
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        75.03
+    Mem Pipes Busy                         %        40.22
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.18
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+==PROF== Connected to process 578873 (/gpfs/scratch/bsc28/bsc28207/fast.cu/out/matmul)
+==PROF== Profiling "warmupKernel()" - 0: 0%....50%....100% - 12 passes
+Configuration 1 2048x2048x2048
+KERNEL 11
+==PROF== Profiling "nvjet_tst_256x128_64x4_1x2_h_..." - 1: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 2: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 3: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 4: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 5: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 6: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 7: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 8: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 9: 0%....50%....100% - 12 passes
+==PROF== Profiling "matmulKernel11" - 10: 0%....50%....100% - 12 passes
+Average elapsed time: (0.102894) s, performance: (    0.2) TFLOPS. size: (2048).
+
+==PROF== Disconnected from process 578873
+[578873] matmul@127.0.0.1
+  warmupKernel() (1024, 1, 1)x(1024, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.56
+    SM Frequency                    Ghz         1.58
+    Elapsed Cycles                cycle         5021
+    Memory Throughput                 %        10.73
+    DRAM Throughput                   %         0.05
+    Duration                         us         3.17
+    L1/TEX Cache Throughput           %         0.65
+    L2 Cache Throughput               %        14.02
+    SM Active Cycles              cycle      1223.82
+    Compute (SM) Throughput           %        11.17
+    ----------------------- ----------- ------------
+
+    OPT   This workload exhibits low compute throughput and memory bandwidth utilization relative to the peak           
+          performance of this device. Achieved compute throughput and/or memory bandwidth below 60.0% of peak           
+          typically indicate latency issues. Look at Scheduler Statistics and Warp State Statistics for potential       
+          reasons.                                                                                                      
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.41
+    Executed Ipc Elapsed  inst/cycle         0.10
+    Issue Slots Busy               %        10.14
+    Issued Ipc Active     inst/cycle         0.41
+    SM Busy                        %        20.28
+    -------------------- ----------- ------------
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Mbyte/s       727.27
+    Mem Busy                               %        10.73
+    Max Bandwidth                          %         5.46
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                       19
+    L2 Hit Rate                            %        99.51
+    Mem Pipes Busy                         %        11.17
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                  1024
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   0
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                   1024
+    Registers Per Thread             register/thread              16
+    Shared Memory Configuration Size           Kbyte            8.19
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block       byte/block               0
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread         1048576
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                3.88
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 25%                                                                                             
+          A wave of thread blocks is defined as the maximum number of blocks that can be executed in parallel on the    
+          target GPU. The number of blocks in a wave depends on the number of multiprocessors and the theoretical       
+          occupancy of the kernel. This kernel launch results in 3 full waves and a partial wave of 233 thread blocks.  
+          Under the assumption of a uniform execution duration of all thread blocks, this partial wave may account for  
+          up to 25.0% of the total runtime of this kernel. Try launching a grid with no partial wave. The overall       
+          impact of this tail effect also lessens with the number of full waves executed for a grid. See the Hardware   
+          Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model) description for     
+          more details on launch configurations.                                                                        
+
+  nvjet_tst_256x128_64x4_1x2_h_bz_coopA_TNT (2, 64, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.41
+    Elapsed Cycles                cycle        45081
+    Memory Throughput                 %        55.51
+    DRAM Throughput                   %        34.95
+    Duration                         us        31.68
+    L1/TEX Cache Throughput           %        62.65
+    L2 Cache Throughput               %        43.71
+    SM Active Cycles              cycle     39524.21
+    Compute (SM) Throughput           %        71.23
+    ----------------------- ----------- ------------
+
+    OPT   Compute is more heavily utilized than Memory: Look at the Compute Workload Analysis section to see what the   
+          compute pipelines are spending their time doing. Also, consider whether any computation is redundant and      
+          could be reduced or moved to look-up tables.                                                                  
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.45
+    Executed Ipc Elapsed  inst/cycle         0.39
+    Issue Slots Busy               %        11.20
+    Issued Ipc Active     inst/cycle         0.45
+    SM Busy                        %        80.39
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (80.4%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is over-utilized and likely a performance bottleneck. Based on the     
+          number of executed instructions, the highest utilized pipeline (9.8%) is Uniform. Comparing the two, the      
+          overall pipeline utilization appears to be caused by high-latency instructions. See the Kernel Profiling      
+          Guide (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the    
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       569.79
+    Mem Busy                               %        55.51
+    Max Bandwidth                          %        54.01
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262419
+    L2 Hit Rate                            %        75.29
+    Mem Pipes Busy                         %        40.25
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.18
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.41
+    Elapsed Cycles                cycle        51549
+    Memory Throughput                 %        55.09
+    DRAM Throughput                   %        31.87
+    Duration                         us           36
+    L1/TEX Cache Throughput           %        54.39
+    L2 Cache Throughput               %        56.80
+    SM Active Cycles              cycle     44220.41
+    Compute (SM) Throughput           %        62.38
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.48
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.86
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.9%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       519.20
+    Mem Busy                               %        47.21
+    Max Bandwidth                          %        55.09
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262248
+    L2 Hit Rate                            %        78.95
+    Mem Pipes Busy                         %        33.17
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.43
+    Elapsed Cycles                cycle        51598
+    Memory Throughput                 %        55.36
+    DRAM Throughput                   %        31.91
+    Duration                         us        35.84
+    L1/TEX Cache Throughput           %        54.38
+    L2 Cache Throughput               %        55.21
+    SM Active Cycles              cycle     44227.09
+    Compute (SM) Throughput           %        62.18
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.46
+    Issue Slots Busy               %        13.47
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.85
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.8%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       520.34
+    Mem Busy                               %        47.07
+    Max Bandwidth                          %        55.36
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        78.68
+    Mem Pipes Busy                         %        33.07
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.42
+    Elapsed Cycles                cycle        51345
+    Memory Throughput                 %        55.48
+    DRAM Throughput                   %        32.06
+    Duration                         us        35.68
+    L1/TEX Cache Throughput           %        54.45
+    L2 Cache Throughput               %        55.34
+    SM Active Cycles              cycle     44175.40
+    Compute (SM) Throughput           %        62.55
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.49
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.93
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.9%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       522.68
+    Mem Busy                               %        47.35
+    Max Bandwidth                          %        55.48
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262246
+    L2 Hit Rate                            %        80.20
+    Mem Pipes Busy                         %        33.27
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.41
+    Elapsed Cycles                cycle        51487
+    Memory Throughput                 %        55.71
+    DRAM Throughput                   %        31.78
+    Duration                         us           36
+    L1/TEX Cache Throughput           %        54.40
+    L2 Cache Throughput               %        55.55
+    SM Active Cycles              cycle     44218.24
+    Compute (SM) Throughput           %        62.41
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.48
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.86
+    -------------------- ----------- ------------
+
+    OPT   Shared is the highest-utilized pipeline (71.9%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical sum of several other pipelines which can't achieve full             
+          utilization on their own. It executes 64-bit floating point and tensor operations. It's dominated by its      
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       518.14
+    Mem Busy                               %        47.25
+    Max Bandwidth                          %        55.71
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        77.34
+    Mem Pipes Busy                         %        33.19
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.42
+    Elapsed Cycles                cycle        51130
+    Memory Throughput                 %        56.12
+    DRAM Throughput                   %        32.23
+    Duration                         us        35.55
+    L1/TEX Cache Throughput           %        54.18
+    L2 Cache Throughput               %        57.15
+    SM Active Cycles              cycle     44397.50
+    Compute (SM) Throughput           %        62.79
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.42
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.57
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.6%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.3%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       524.75
+    Mem Busy                               %        47.54
+    Max Bandwidth                          %        56.12
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262419
+    L2 Hit Rate                            %        77.86
+    Mem Pipes Busy                         %        33.40
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.41
+    Elapsed Cycles                cycle        51581
+    Memory Throughput                 %        55.02
+    DRAM Throughput                   %        31.79
+    Duration                         us        36.03
+    L1/TEX Cache Throughput           %        54.30
+    L2 Cache Throughput               %        55.47
+    SM Active Cycles              cycle     44301.67
+    Compute (SM) Throughput           %        62.35
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.45
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.72
+    -------------------- ----------- ------------
+
+    OPT   Shared is the highest-utilized pipeline (71.7%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical sum of several other pipelines which can't achieve full             
+          utilization on their own. It executes 64-bit floating point and tensor operations. It's dominated by its      
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       518.05
+    Mem Busy                               %        47.20
+    Max Bandwidth                          %        55.02
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        78.84
+    Mem Pipes Busy                         %        33.16
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.42
+    Elapsed Cycles                cycle        51484
+    Memory Throughput                 %        55.98
+    DRAM Throughput                   %        31.99
+    Duration                         us        35.78
+    L1/TEX Cache Throughput           %        54.29
+    L2 Cache Throughput               %        56.47
+    SM Active Cycles              cycle     44311.57
+    Compute (SM) Throughput           %        62.33
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.45
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.71
+    -------------------- ----------- ------------
+
+    OPT   Shared is the highest-utilized pipeline (71.7%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical sum of several other pipelines which can't achieve full             
+          utilization on their own. It executes 64-bit floating point and tensor operations. It's dominated by its      
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.4%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       521.17
+    Mem Busy                               %        47.18
+    Max Bandwidth                          %        55.98
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        78.02
+    Mem Pipes Busy                         %        33.15
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.41
+    Elapsed Cycles                cycle        51001
+    Memory Throughput                 %        56.36
+    DRAM Throughput                   %        32.46
+    Duration                         us        35.71
+    L1/TEX Cache Throughput           %        53.99
+    L2 Cache Throughput               %        57.03
+    SM Active Cycles              cycle     44551.45
+    Compute (SM) Throughput           %        62.98
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.53
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.38
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.32
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.3%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.3%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       528.93
+    Mem Busy                               %        47.68
+    Max Bandwidth                          %        56.36
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        79.54
+    Mem Pipes Busy                         %        33.50
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+
+  void M11::matmulKernel11<128, 256, 64, 384, 3, 128, 2, 1>(int, int, int, CUtensorMap_st, CUtensorMap_st, CUtensorMap_st, int *) (128, 1, 1)x(384, 1, 1), Context 1, Stream 7, Device 0, CC 9.0
+    Section: GPU Speed Of Light Throughput
+    ----------------------- ----------- ------------
+    Metric Name             Metric Unit Metric Value
+    ----------------------- ----------- ------------
+    DRAM Frequency                  Ghz         1.59
+    SM Frequency                    Ghz         1.42
+    Elapsed Cycles                cycle        51431
+    Memory Throughput                 %        55.99
+    DRAM Throughput                   %        32.29
+    Duration                         us        35.74
+    L1/TEX Cache Throughput           %        54.16
+    L2 Cache Throughput               %        56.31
+    SM Active Cycles              cycle     44416.11
+    Compute (SM) Throughput           %        62.43
+    ----------------------- ----------- ------------
+
+    INF   Compute and Memory are well-balanced: To reduce runtime, both computation and memory traffic must be reduced. 
+          Check both the Compute Workload Analysis and Memory Workload Analysis sections.                               
+
+    Section: Compute Workload Analysis
+    -------------------- ----------- ------------
+    Metric Name          Metric Unit Metric Value
+    -------------------- ----------- ------------
+    Executed Ipc Active   inst/cycle         0.54
+    Executed Ipc Elapsed  inst/cycle         0.47
+    Issue Slots Busy               %        13.42
+    Issued Ipc Active     inst/cycle         0.54
+    SM Busy                        %        71.54
+    -------------------- ----------- ------------
+
+    OPT   Tensor is the highest-utilized pipeline (71.5%) based on active cycles, taking into account the rates of its  
+          different instructions. It is the logical aggregation of individual tensor pipelines. It's dominated by its   
+          Tensor (FP) sub-pipeline. The pipeline is well-utilized, but might become a bottleneck if more work is        
+          added. Based on the number of executed instructions, the highest utilized pipeline (8.3%) is ALU. It          
+          executes integer and logic operations. Comparing the two, the overall pipeline utilization appears to be      
+          caused by high-latency instructions. See the Kernel Profiling Guide                                           
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-decoder) or hover over the          
+          pipeline name to understand the workloads handled by each pipeline. The Instruction Statistics section shows  
+          the mix of executed instructions for this workload.                                                           
+
+    Section: Memory Workload Analysis
+    ---------------------------- ----------- ------------
+    Metric Name                  Metric Unit Metric Value
+    ---------------------------- ----------- ------------
+    Memory Throughput                Gbyte/s       526.18
+    Mem Busy                               %        47.26
+    Max Bandwidth                          %        55.99
+    L1/TEX Hit Rate                        %            0
+    L2 Compression Success Rate            %            0
+    L2 Compression Ratio                   %            0
+    L2 Compression Input Sectors                   262163
+    L2 Hit Rate                            %        78.80
+    Mem Pipes Busy                         %        33.20
+    ---------------------------- ----------- ------------
+
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   384
+    Cluster Scheduling Policy                           PolicySpread
+    Cluster Size                                                   2
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                    128
+    Registers Per Thread             register/thread             168
+    Shared Memory Configuration Size           Kbyte          233.47
+    Driver Shared Memory Per Block       Kbyte/block            1.02
+    Dynamic Shared Memory Per Block      Kbyte/block          213.63
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM             132
+    Stack Size                                                  1024
+    Threads                                   thread           49152
+    # TPCs                                                        66
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.97
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 3.03%                                                                                           
+          The grid for this launch is configured to execute only 128 blocks, which is less than the GPU's 132           
+          multiprocessors. This can underutilize some multiprocessors. If you do not intend to execute this kernel      
+          concurrently with other workloads, consider reducing the block size to have at least one block per            
+          multiprocessor or increase the size of the grid to fully utilize the available hardware resources. See the    
+          Hardware Model (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model)            
+          description for more details on launch configurations.                                                        
+

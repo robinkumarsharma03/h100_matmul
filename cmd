@@ -1,0 +1,1 @@
+ncu --target-processes all --clock-control base     --section ComputeWorkloadAnalysis     --section MemoryWorkloadAnalysis     --section SpeedOfLight     --section LaunchStats     ./out/matmul >> 256_kernel0 
