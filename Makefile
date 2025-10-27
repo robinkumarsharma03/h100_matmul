@@ -18,6 +18,11 @@ endif
 
 NVCC_BASE = nvcc $(NVCC_FLAGS) $(NVCC_LDFLAGS) -lineinfo
 
+# convenience alias so `make matmul` still works
+.PHONY: matmul clean
+.DEFAULT_GOAL := matmul 
+
+matmul: $(BIN)
 
 $(OUT_DIR):
 	mkdir -p $@
