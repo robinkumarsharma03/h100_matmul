@@ -31,9 +31,8 @@ $(OUT_DIR):
 $(BIN): matmul.cu | $(OUT_DIR)
 	$(NVCC_BASE) $^ -o $@
 
-# convenience alias so `make matmul` still works
-.PHONY: matmul
-matmul: $(BIN)
+clean:
+	rm $(OUT_DIR)/*
 
 #sum: sum.cu 
 #	$(NVCC_BASE) $^ $(CUDA_OUTPUT_FILE)
@@ -49,5 +48,4 @@ matmul: $(BIN)
 #matmulprofile: matmul
 #	$(NCU_COMMAND) -o $@ -f $(OUT_DIR)/$^
 
-clean:
-	rm $(OUT_DIR)/*
+
