@@ -53,21 +53,20 @@ void cudaCheck(cudaError_t error, const char *file, int line) {
 #include "examples/matmul/matmul_11.cuh"
 #include "examples/matmul/matmul_12.cuh"
 
-/*
+
 const int configs[7][3] = {
 	{256, 256, 256}, {512, 512, 512}, {1024, 1024, 1024}, {2048, 2048, 2048},
 	{4096, 4096, 4096}, {8192, 8192, 8192}, {16384, 16384, 16384}
 };
-*/
+/*
 const int configs[1][3] = {
 	//{256, 256, 256}, {512, 512, 512}, {1024, 1024, 1024}, {2048, 2048, 2048},
-	//{4096, 4096, 4096}, {8192, 8192, 8192}, 
-	//{16384, 16384, 16384}
+	//{4096, 4096, 4096}, {8192, 8192, 8192}, {16384, 16384, 16384}
 	//{256,256,256}
 	//{8192, 8192, 8192}
-	{2048, 2048, 2048}
+	//{2048, 2048, 2048}
 };
-
+*/
 
 std::default_random_engine generator(69);
 cublasHandle_t cublas_handle;
@@ -87,10 +86,7 @@ void run_kernel(int kernel_num, int M, int N, int K, bf16 *A, bf16 *B, bf16 *C, 
   switch (kernel_num) {
     std::cout<<"Running kernel "<<kernel_num<<endl;
     case 0:
-    // ... where you launch kernel 0
-//NVTX_PUSH("kernel_0");
       runCublasGemmBF16(M, N, K, A, B, C);
-//NVTX_POP();
       break;
     case 1:
       runKernel1(M, N, K, A, B, C);
@@ -126,11 +122,7 @@ void run_kernel(int kernel_num, int M, int N, int K, bf16 *A, bf16 *B, bf16 *C, 
       runKernel11(M, N, K, A, B, C, DB);
       break;
     case 12:
-    // ... where you launch kernel 12
-
-//NVTX_PUSH("kernel_12");
       runKernel12(M, N, K, A, B, C, DB);
- //NVTX_POP();
       break;
   }
 }
@@ -216,7 +208,7 @@ int main() {
 
   int repeat_times = 8;
   bool run_verif = true;
-  for (int kernel_num : {11}) {
+  for (int kernel_num : {0,12}) {
     // for (int kernel_num : {0, 11}) {
     // Give the GPU some rest to avoid thermal throttling
     sleep(5);
