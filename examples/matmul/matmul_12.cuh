@@ -453,6 +453,7 @@ __global__  __launch_bounds__(NUM_THREADS) void  __cluster_dims__(CLUSTER_M * CL
         while (schedule.next(num_block_m, num_block_n)) {
             num_block_n = num_block_n * CLUSTER_N + rank_n;
             num_block_m = num_block_m * CLUSTER_M + rank_m;
+            int outstanding_groups = 0;
             {
                 if (qidx == QSIZE) {qidx = 0; p ^= 1; };
                 wait(&full[qidx], p);
@@ -481,9 +482,12 @@ __global__  __launch_bounds__(NUM_THREADS) void  __cluster_dims__(CLUSTER_M * CL
                     }
                 }
                 warpgroup_commit_batch();
-				wg_wait_one();  
-				wg_wait_all();                  
-				//waarpgroup_wait();
+                ++outstanding_groups;
+                if (outstanding_groups >= 2) {
+                    // Allow up to two committed groups to overlap before throttling issuance.
+                    wg_wait_one();
+                    --outstanding_groups;
+                }
                 if (tid < CLUSTERS) arrive_cluster(&empty[qidx], tid);
                 ++qidx;
             }
@@ -506,16 +510,19 @@ __global__  __launch_bounds__(NUM_THREADS) void  __cluster_dims__(CLUSTER_M * CL
                     }
                 }
                 warpgroup_commit_batch();
-				wg_wait_one();
-				wg_wait_all();                
-//warpgroup_wait();
+                ++outstanding_groups;
+                if (outstanding_groups >= 2) {
+                    // Allow up to two committed groups to overlap before throttling issuance.
+                    wg_wait_one();
+                    --outstanding_groups;
+                }
                 if (tid < CLUSTERS) arrive_cluster(&empty[qidx], tid);
             }
 
             asm volatile("cp.async.bulk.wait_group 0;");
-			wg_wait_all();  
-			// Make sure all MMAs are finished before stmatrix / stores
-			asm volatile("wgmma.wait_group.sync.aligned 0;");
+            wg_wait_all();
+            // Make sure all MMAs are finished before stmatrix / stores
+            asm volatile("wgmma.wait_group.sync.aligned 0;");
 
             bf16 d_bf16[8];
             int* data_ptr = (int*)d_bf16;
